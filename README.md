@@ -19,7 +19,7 @@ No crees un proyecto nuevo. Sigue estos pasos para bajar este repositorio a tu N
 
 1.  Abre NetBeans.
 2.  Ve al menú superior: **Team** > **Git** > **Clone...**
-3.  **Repository URL**: `[PEGA AQUÍ LA URL DEL REPO QUE COPIASTE EN EL PASO 1]`
+3.  **Repository URL**: `[PEGA AQUÍ LA URL DEL REPO]`
 4.  **User**: Tu usuario de GitHub.
 5.  **Password**: Tu **Personal Access Token** (No tu contraseña normal).
 6.  Dale a **Next**.
