@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutorias.controlador.FXMLMenuReporteController">
+   <children>
+      <Button layoutX="51.0" layoutY="40.0" mnemonicParsing="false" onAction="#clicGenerarReporteTutoria" text="Generar Reporte de Tutoria CU13" />
+      <Button layoutX="55.0" layoutY="100.0" mnemonicParsing="false" onAction="#clicEnviarReporteTutoria" text="Enviar Reporte de Tutoria CU-17" />
+      <Button layoutX="56.0" layoutY="163.0" mnemonicParsing="false" onAction="#clicResponderReporteTutoria" text="Responder Reporte de Tutoria CU-31" />
+      <Button layoutX="56.0" layoutY="233.0" mnemonicParsing="false" onAction="#clicGenerarReporteGeneral" text="Generar Reporte General CU-32" />
+      <Button layoutX="51.0" layoutY="285.0" mnemonicParsing="false" onAction="#clicRevisarReporteGeneral" text="Revisar Reporte General CU-39" />
+      <Button layoutX="47.0" layoutY="342.0" mnemonicParsing="false" onAction="#clicResponderReporteGeneral" text="Responder Reporte General CU-40" />
+   </children>
+</AnchorPane>
