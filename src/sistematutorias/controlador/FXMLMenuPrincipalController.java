@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import sistematutorias.SistemaTutorias;
 import utilidad.Sesion;
@@ -31,6 +32,10 @@ public class FXMLMenuPrincipalController implements Initializable {
     private Button btnReporte;
     @FXML
     private Button btnPersonal;
+    @FXML
+    private Label lbNombreTutor;
+    @FXML
+    private Label lbInfoExtra;
 
     /**
      * Initializes the controller class.
