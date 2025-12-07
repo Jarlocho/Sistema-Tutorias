@@ -1,15 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutorias.controlador.FXMLMenuPrincipalController">
-   <children>
-      <Button fx:id="btnTutoria" layoutX="267.0" layoutY="104.0" mnemonicParsing="false" onAction="#btnClicTutoria" text="Tutoria" />
-      <Button fx:id="btnReporte" layoutX="264.0" layoutY="169.0" mnemonicParsing="false" onAction="#btnClicReporte" text="Reporte" />
-      <Button fx:id="btnPersonal" layoutX="262.0" layoutY="245.0" mnemonicParsing="false" onAction="#btnClicPersonal" text="Personal" />
-   </children>
-</AnchorPane>
+<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" 
+      style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" 
+      xmlns="http://javafx.com/javafx/8" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="sistematutorias.controlador.FXMLMenuPrincipalController">
+    
+    <!-- Cabecera con botón de cerrar sesión -->
+    <BorderPane prefHeight="100.0" prefWidth="800.0" style="-fx-background-color: #18529d;">
+        <effect>
+            <DropShadow color="#00000033" offsetY="3.0" radius="5.0" />
+        </effect>
+        
+        <!-- Centro: Título -->
+        <center>
+            <Label text="Sistema de Tutorías" textFill="WHITE">
+                <font>
+                    <Font name="Segoe UI Bold" size="32.0" />
+                </font>
+                <padding>
+                    <Insets top="10.0" />
+                </padding>
+            </Label>
+        </center>
+        
+        <!-- Derecha: Botón de cerrar sesión -->
+        <right>
+            <Button mnemonicParsing="false" 
+                    onAction="#btnClicSalir" 
+                    prefHeight="35.0" prefWidth="120.0" 
+                    style="-fx-background-color: #d9534f; -fx-text-fill: white; -fx-background-radius: 5; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(217,83,79,0.3), 5, 0, 0, 2);"
+                    text="Cerrar Sesión">
+                <font>
+                    <Font name="Segoe UI Semibold" size="12.0" />
+                </font>
+                <padding>
+                    <Insets top="5.0" right="10.0" bottom="5.0" left="10.0" />
+                </padding>
+            </Button>
+        </right>
+        
+        <!-- Margen izquierdo para balance -->
+        <left>
+            <Region prefWidth="120.0" />
+        </left>
+    </BorderPane>
+    
+    <!-- Contenedor principal -->
+    <VBox alignment="CENTER" spacing="40.0" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets top="40.0" bottom="40.0" />
+        </padding>
+        
+        <!-- Título del menú -->
+        <VBox alignment="CENTER" spacing="15.0">
+            <Label text="Menú Principal" textFill="#18529d">
+                <font>
+                    <Font name="Segoe UI Bold" size="28.0" />
+                </font>
+            </Label>
+            <Label text="Seleccione una opción para continuar" textFill="#666666" textAlignment="CENTER">
+                <font>
+                    <Font name="Segoe UI" size="14.0" />
+                </font>
+            </Label>
+        </VBox>
+        
+        <!-- Tarjeta con opciones -->
+        <VBox alignment="CENTER" spacing="20.0" 
+              style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);"
+              maxWidth="400.0" prefWidth="400.0">
+            <padding>
+                <Insets top="40.0" bottom="40.0" left="40.0" right="40.0" />
+            </padding>
+            
+            <!-- Botón Tutoría -->
+            <Button fx:id="btnTutoria" onAction="#btnClicTutoria" 
+                    prefHeight="50.0" prefWidth="320.0" 
+                    style="-fx-background-color: #18529d; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(24,82,157,0.3), 10, 0, 0, 2);"
+                    text="Tutoría">
+                <font>
+                    <Font name="Segoe UI Semibold" size="15.0" />
+                </font>
+            </Button>
+            
+            <!-- Botón Reporte -->
+            <Button fx:id="btnReporte" onAction="#btnClicReporte" 
+                    prefHeight="50.0" prefWidth="320.0" 
+                    style="-fx-background-color: #18529d; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(24,82,157,0.3), 10, 0, 0, 2);"
+                    text="Reporte">
+                <font>
+                    <Font name="Segoe UI Semibold" size="15.0" />
+                </font>
+            </Button>
+            
+            <!-- Botón Personal -->
+            <Button fx:id="btnPersonal" onAction="#btnClicPersonal" 
+                    prefHeight="50.0" prefWidth="320.0" 
+                    style="-fx-background-color: #18529d; -fx-text-fill: white; -fx-background-radius: 8; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(24,82,157,0.3), 10, 0, 0, 2);"
+                    text="Personal">
+                <font>
+                    <Font name="Segoe UI Semibold" size="15.0" />
+                </font>
+            </Button>
+            
+        </VBox>
+        
+        <!-- Pie de página simplificado -->
+        <VBox alignment="CENTER" spacing="5.0">
+            <Label text="Sistema de Tutorías" textFill="#888888">
+                <font>
+                    <Font name="Segoe UI Semibold" size="12.0" />
+                </font>
+            </Label>
+            <Label text="Versión 1.0 | © 2024" textFill="#AAAAAA">
+                <font>
+                    <Font name="Segoe UI" size="11.0" />
+                </font>
+            </Label>
+        </VBox>
+        
+    </VBox>
+    
+</VBox>

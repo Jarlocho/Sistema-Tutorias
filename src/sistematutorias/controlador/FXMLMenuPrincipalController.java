@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import sistematutorias.SistemaTutorias;
 import utilidad.Sesion;
 
 /**
@@ -78,6 +79,20 @@ public class FXMLMenuPrincipalController implements Initializable {
             escenario.setScene(escena);
             escenario.setTitle(titulo);
             escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void btnClicSalir(ActionEvent event) {
+         try {
+            Parent vista = FXMLLoader.load(SistemaTutorias.class.getResource("vista/FXMLInicioSesion.fxml"));
+            Scene escena = new Scene(vista);
+            Stage stPrincipal = (Stage) btnTutoria.getScene().getWindow();
+            stPrincipal.setScene(escena);
+            stPrincipal.setTitle("Iniciar sesión");
+            stPrincipal.show();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
