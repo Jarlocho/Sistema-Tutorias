@@ -45,8 +45,8 @@ public class FXMLMenuPrincipalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarPermisos();
         cargarDatosUsuario();
-    }    
-    
+    }
+
     private void cargarDatosUsuario() {
         String rol = Sesion.getRolActual();
         String nombreCompleto = "";
@@ -55,17 +55,17 @@ public class FXMLMenuPrincipalController implements Initializable {
         if ("TUTOR".equals(rol)) {
             Tutor tutor = Sesion.getTutorSesion();
             if (tutor != null) {
-                nombreCompleto = tutor.getNombre() + " " + 
-                                 tutor.getApellidoPaterno() + " " + 
-                                 tutor.getApellidoMaterno();
+                nombreCompleto = tutor.getNombre() + " "
+                        + tutor.getApellidoPaterno() + " "
+                        + tutor.getApellidoMaterno();
             }
-        } 
+        }
         /* // A FUTURO: Cuando agregues otros roles, solo añades el else if:
         else if ("COORDINADOR".equals(rol)) {
             Coordinador coord = Sesion.getCoordinadorSesion();
             nombreCompleto = coord.getNombre() + ...;
         }
-        */
+         */
 
         // Mostramos el nombre en la etiqueta
         lbNombreUsuario.setText(nombreCompleto);
@@ -73,20 +73,20 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     private void configurarPermisos() {
         String rol = Sesion.getRolActual();
-        
+
         // Primero ocultamos todo por seguridad o lo dejamos visible y desactivamos
         btnTutoria.setVisible(false);
         btnReporte.setVisible(false);
         btnPersonal.setVisible(false);
-        
+
         if ("TUTOR".equals(rol)) {
             // El tutor solo ve Tutoría y Reporte
             btnTutoria.setVisible(true);
             btnReporte.setVisible(true);
-        } 
+        }
         // else if ("COORDINADOR".equals(rol)) { ... logica futuro }
     }
-    
+
     @FXML
     private void btnClicTutoria(ActionEvent event) {
         irPantalla("/sistematutorias/vista/FXMLMenuTutoria.fxml", "Menú Tutoría");
@@ -99,8 +99,9 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void btnClicPersonal(ActionEvent event) {
+        irPantalla("/sistematutorias/vista/FXMLMenuPersonal.fxml", "Menú Personal");
     }
-    
+
     private void irPantalla(String ruta, String titulo) {
         try {
             Stage escenario = (Stage) btnTutoria.getScene().getWindow();
@@ -117,7 +118,7 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void btnClicSalir(ActionEvent event) {
-         try {
+        try {
             Parent vista = FXMLLoader.load(SistemaTutorias.class.getResource("vista/FXMLInicioSesion.fxml"));
             Scene escena = new Scene(vista);
             Stage stPrincipal = (Stage) btnTutoria.getScene().getWindow();
