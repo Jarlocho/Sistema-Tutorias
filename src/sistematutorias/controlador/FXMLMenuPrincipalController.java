@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import sistematutorias.SistemaTutorias;
+import sistematutorias.modelo.pojo.Tutor;
 import utilidad.Sesion;
 
 /**
@@ -33,9 +34,9 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private Button btnPersonal;
     @FXML
-    private Label lbNombreTutor;
-    @FXML
     private Label lbInfoExtra;
+    @FXML
+    private Label lbNombreUsuario;
 
     /**
      * Initializes the controller class.
@@ -43,7 +44,32 @@ public class FXMLMenuPrincipalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarPermisos();
+        cargarDatosUsuario();
     }    
+    
+    private void cargarDatosUsuario() {
+        String rol = Sesion.getRolActual();
+        String nombreCompleto = "";
+
+        // Verificamos el rol para saber de qué objeto sacar el nombre
+        if ("TUTOR".equals(rol)) {
+            Tutor tutor = Sesion.getTutorSesion();
+            if (tutor != null) {
+                nombreCompleto = tutor.getNombre() + " " + 
+                                 tutor.getApellidoPaterno() + " " + 
+                                 tutor.getApellidoMaterno();
+            }
+        } 
+        /* // A FUTURO: Cuando agregues otros roles, solo añades el else if:
+        else if ("COORDINADOR".equals(rol)) {
+            Coordinador coord = Sesion.getCoordinadorSesion();
+            nombreCompleto = coord.getNombre() + ...;
+        }
+        */
+
+        // Mostramos el nombre en la etiqueta
+        lbNombreUsuario.setText(nombreCompleto);
+    }
 
     private void configurarPermisos() {
         String rol = Sesion.getRolActual();

@@ -34,3 +34,4 @@ public class Sesion {
         rolActual = null;
     }
 }
+
