@@ -13,10 +13,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistematutorias.SistemaTutorias;
 import utilidad.Sesion;
+import utilidad.Utilidades;
 
 /**
  * FXML Controller class
@@ -43,30 +46,50 @@ public class FXMLMenuReporteController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       configurarVistaPorRol();
-    }    
+        configurarVistaPorRol();
+    }
 
     private void configurarVistaPorRol() {
         String rol = Sesion.getRolActual();
-        
+
         // Ocultar todo
         btnGenerarReporte.setVisible(false);
         btnEnviarReporte.setVisible(false);
-        if(btnResponderReporteTutoria != null && btnGenerarReporteGeneral != null && btnRevisarReporteGeneral != null && btnResponderReporteGeneral != null){ 
+        if (btnResponderReporteTutoria != null && btnGenerarReporteGeneral != null && btnRevisarReporteGeneral != null && btnResponderReporteGeneral != null) {
             btnResponderReporteTutoria.setVisible(false);
             btnGenerarReporteGeneral.setVisible(false);
             btnRevisarReporteGeneral.setVisible(false);
             btnResponderReporteGeneral.setVisible(false);
         }
-        
+
         if ("TUTOR".equals(rol)) {
             btnGenerarReporte.setVisible(true);
             btnEnviarReporte.setVisible(true);
         }
     }
-    
+
     @FXML
     private void clicGenerarReporteTutoria(ActionEvent event) {
+        try {
+            FXMLLoader cargador = new FXMLLoader(
+                    SistemaTutorias.class.getResource("vista/reporte/FXMLGenerarReporteTutoria.fxml")
+            );
+            Parent vista = cargador.load();
+            Scene escena = new Scene(vista);
+            Stage escenario = new Stage();
+            escenario.setScene(escena);
+            escenario.setTitle("Generar reporte de tutoría");
+            escenario.initOwner(btnGenerarReporte.getScene().getWindow());
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Utilidades.mostrarAlertaSimple(
+                    "Error",
+                    "No se pudo abrir la ventana para generar el reporte de tutoría.\nVerifique la ruta del archivo FXML.",
+                    Alert.AlertType.ERROR
+            );
+        }
     }
 
     @FXML
@@ -92,15 +115,15 @@ public class FXMLMenuReporteController implements Initializable {
     @FXML
     private void clicVolverMenuPrincipal(ActionEvent event) {
         try {
-        Parent vista = FXMLLoader.load(SistemaTutorias.class.getResource("vista/FXMLMenuPrincipal.fxml"));
-        Scene escena = new Scene(vista);
-        Stage stPrincipal = (Stage) btnGenerarReporte.getScene().getWindow();
-        stPrincipal.setScene(escena);
-        stPrincipal.setTitle("Menú Principal");
-        stPrincipal.show();
-    } catch (IOException ex) {
-        ex.printStackTrace();
+            Parent vista = FXMLLoader.load(SistemaTutorias.class.getResource("vista/FXMLMenuPrincipal.fxml"));
+            Scene escena = new Scene(vista);
+            Stage stPrincipal = (Stage) btnGenerarReporte.getScene().getWindow();
+            stPrincipal.setScene(escena);
+            stPrincipal.setTitle("Menú Principal");
+            stPrincipal.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
-    }
-    
+
 }
