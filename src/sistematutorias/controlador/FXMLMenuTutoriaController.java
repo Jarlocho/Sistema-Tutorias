@@ -6,6 +6,7 @@ package sistematutorias.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +14,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import sistematutorias.SistemaTutorias;
+import sistematutorias.dominio.TutoriaImp;
 import utilidad.Sesion;
+import utilidad.Utilidades;
 
 /**
  * FXML Controller class
@@ -63,7 +67,14 @@ public class FXMLMenuTutoriaController implements Initializable {
 
     @FXML
     private void clicRegistrarHoraTutoria(ActionEvent event) {
-        irPantalla("/sistematutorias/vista/tutoria/FXMLRegistrarHoraTutoria.fxml", "Registrar Hora");
+        HashMap<String, Object> respuesta = TutoriaImp.obtenerFechasPeriodoActual();
+        if (!(boolean) respuesta.get("error")) {
+            irPantalla("/sistematutorias/vista/tutoria/FXMLRegistrarHoraTutoria.fxml", "Registrar Hora");
+        } else {
+            Utilidades.mostrarAlertaSimple("No se puede continuar",
+                    (String) respuesta.get("mensaje"),
+                    Alert.AlertType.WARNING);
+        }
     }
 
     @FXML

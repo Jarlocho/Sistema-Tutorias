@@ -65,8 +65,6 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
             ArrayList<FechaTutoria> lista = (ArrayList<FechaTutoria>) respuesta.get("fechas");
             ObservableList<FechaTutoria> fechasObs = FXCollections.observableArrayList(lista);
             cbFechas.setItems(fechasObs);
-        } else {
-            Utilidades.mostrarAlertaSimple("Atención", (String) respuesta.get("mensaje"), Alert.AlertType.WARNING);
         }
     }
 
