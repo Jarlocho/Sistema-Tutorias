@@ -63,6 +63,7 @@ public class FXMLMenuTutoriaController implements Initializable {
 
     @FXML
     private void clicRegistrarHoraTutoria(ActionEvent event) {
+        irPantalla("/sistematutorias/vista/tutoria/FXMLRegistrarHoraTutoria.fxml", "Registrar Hora");
     }
 
     @FXML
@@ -80,15 +81,28 @@ public class FXMLMenuTutoriaController implements Initializable {
     @FXML
     private void clicVolverMenuPrincipal(ActionEvent event) {
         try {
-        Parent vista = FXMLLoader.load(SistemaTutorias.class.getResource("vista/FXMLMenuPrincipal.fxml"));
-        Scene escena = new Scene(vista);
-        Stage stPrincipal = (Stage) btnRegistrarHorario.getScene().getWindow();
-        stPrincipal.setScene(escena);
-        stPrincipal.setTitle("Menú Principal");
-        stPrincipal.show();
-    } catch (IOException ex) {
-        ex.printStackTrace();
-    }
+            Parent vista = FXMLLoader.load(SistemaTutorias.class.getResource("vista/FXMLMenuPrincipal.fxml"));
+            Scene escena = new Scene(vista);
+            Stage stPrincipal = (Stage) btnRegistrarHorario.getScene().getWindow();
+            stPrincipal.setScene(escena);
+            stPrincipal.setTitle("Menú Principal");
+            stPrincipal.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
+    private void irPantalla(String ruta, String titulo) {
+        try {
+            Stage escenario = (Stage) btnRegistrarHorario.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
+            Parent root = loader.load();
+            Scene escena = new Scene(root);
+            escenario.setScene(escena);
+            escenario.setTitle(titulo);
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
