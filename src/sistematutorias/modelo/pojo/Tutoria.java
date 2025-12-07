@@ -80,4 +80,8 @@ public class Tutoria {
         this.evidencia = evidencia;
     }
 
+    @Override
+    public String toString() {
+        return fecha.toString() + " - " + horaInicio.toString();
+    }
 }

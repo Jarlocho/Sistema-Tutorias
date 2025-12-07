@@ -59,4 +59,21 @@ public class TutoriaImp {
         
         return respuesta;
     }
+    
+    public static HashMap<String, Object> subirEvidencia(int idTutoria, byte[] archivo) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put("error", true);
+        try {
+            if (TutoriaDAO.subirEvidencia(idTutoria, archivo)) {
+                respuesta.put("error", false);
+                respuesta.put("mensaje", "Evidencia subida correctamente.");
+            } else {
+                respuesta.put("mensaje", "No se pudo guardar la evidencia.");
+            }
+        } catch (SQLException ex) {
+            respuesta.put("mensaje", "Error BD: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        return respuesta;
+    }
 }

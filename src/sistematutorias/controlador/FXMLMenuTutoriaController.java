@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import sistematutorias.SistemaTutorias;
+import sistematutorias.dominio.AsistenciaImp; // <--- IMPORTANTE: Agregamos este import
 import sistematutorias.dominio.TutoriaImp;
 import utilidad.Sesion;
 import utilidad.Utilidades;
@@ -79,6 +80,17 @@ public class FXMLMenuTutoriaController implements Initializable {
 
     @FXML
     private void clicRegistrarAsistenciaTutorado(ActionEvent event) {
+        int idTutor = Sesion.getTutorSesion().getIdTutor();
+
+        HashMap<String, Object> respuesta = AsistenciaImp.obtenerSesionesTutor(idTutor);
+
+        if (!(boolean) respuesta.get("error")) {
+            irPantalla("/sistematutorias/vista/tutoria/FXMLRegistrarAsistenciaTutorado.fxml", "Registrar Asistencia");
+        } else {
+            Utilidades.mostrarAlertaSimple("No se puede continuar",
+                    (String) respuesta.get("mensaje"),
+                    Alert.AlertType.WARNING);
+        }
     }
 
     @FXML

@@ -29,8 +29,8 @@ public class TutoriaDAO {
                 sentencia.setTime(4, Time.valueOf(tutoria.getHoraInicio()));
                 resultado = sentencia.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace(); // Opcional: imprimir error en consola para debug
-                throw e; // Re-lanzamos para que el Imp sepa que hubo error
+                e.printStackTrace(); 
+                throw e; 
             } finally {
                 ConexionBD.cerrarConexionBD();
             }
@@ -58,5 +58,41 @@ public class TutoriaDAO {
             }
         }
         return registrada;
+    }
+    
+    public static boolean subirEvidencia(int idTutoria, byte[] evidencia) throws SQLException {
+        boolean resultado = false;
+        Connection conexion = ConexionBD.abrirConexionBD();
+        if (conexion != null) {
+            try {
+                String consulta = "UPDATE tutoria SET evidencia = ? WHERE idTutoria = ?";
+                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                sentencia.setBytes(1, evidencia); // Aquí guardamos el PDF
+                sentencia.setInt(2, idTutoria);
+                
+                int filasAfectadas = sentencia.executeUpdate();
+                resultado = (filasAfectadas > 0);
+            } finally {
+                ConexionBD.cerrarConexionBD();
+            }
+        }
+        return resultado;
+    }
+
+    public static boolean comprobarExistenciaEvidencia(int idTutoria) throws SQLException {
+        boolean existe = false;
+        Connection conexion = ConexionBD.abrirConexionBD();
+        if (conexion != null) {
+            try {
+                String consulta = "SELECT idTutoria FROM tutoria WHERE idTutoria = ? AND evidencia IS NOT NULL";
+                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                sentencia.setInt(1, idTutoria);
+                ResultSet resultado = sentencia.executeQuery();
+                existe = resultado.next();
+            } finally {
+                ConexionBD.cerrarConexionBD();
+            }
+        }
+        return existe;
     }
 }
