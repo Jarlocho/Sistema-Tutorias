@@ -12,20 +12,23 @@ import java.time.LocalTime;
  * @author HP
  */
 public class Tutoria {
+
     private int idTutoria;
-    private int idTutor;     
+    private int idTutor;
     private LocalDate fecha;
     private LocalTime horaInicio;
-    private byte[] evidencia;    
+    private int idPeriodo;
+    private byte[] evidencia;
 
     public Tutoria() {
     }
 
-    public Tutoria(int idTutoria, int idTutor, LocalDate fecha, LocalTime horaInicio, byte[] evidencia) {
+    public Tutoria(int idTutoria, int idTutor, LocalDate fecha, LocalTime horaInicio, int idPeriodo, byte[] evidencia) {
         this.idTutoria = idTutoria;
         this.idTutor = idTutor;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
+        this.idPeriodo = idPeriodo;
         this.evidencia = evidencia;
     }
 
@@ -59,6 +62,14 @@ public class Tutoria {
 
     public void setHoraInicio(LocalTime horaInicio) {
         this.horaInicio = horaInicio;
+    }
+
+    public int getIdPeriodo() {
+        return idPeriodo;
+    }
+
+    public void setIdPeriodo(int idPeriodo) {
+        this.idPeriodo = idPeriodo;
     }
 
     public byte[] getEvidencia() {

@@ -4,12 +4,18 @@
  */
 package sistematutorias.controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
+import sistematutorias.SistemaTutorias;
 import utilidad.Sesion;
 
 /**
@@ -81,6 +87,20 @@ public class FXMLMenuReporteController implements Initializable {
 
     @FXML
     private void clicResponderReporteGeneral(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicVolverMenuPrincipal(ActionEvent event) {
+        try {
+        Parent vista = FXMLLoader.load(SistemaTutorias.class.getResource("vista/FXMLMenuPrincipal.fxml"));
+        Scene escena = new Scene(vista);
+        Stage stPrincipal = (Stage) btnGenerarReporte.getScene().getWindow();
+        stPrincipal.setScene(escena);
+        stPrincipal.setTitle("Menú Principal");
+        stPrincipal.show();
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
     }
     
 }
