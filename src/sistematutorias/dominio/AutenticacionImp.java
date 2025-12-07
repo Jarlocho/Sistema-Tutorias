@@ -4,45 +4,26 @@
  */
 package sistematutorias.dominio;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import sistematutorias.modelo.ConexionBD;
 import sistematutorias.modelo.dao.AutenticacionDAO;
 import sistematutorias.modelo.pojo.Tutor;
+import utilidad.Sesion;
 
 /**
  *
  * @author HP
  */
 public class AutenticacionImp {
-    public static HashMap<String, Object> verificarSesionTutor(String noPersonal, String password) {
-        HashMap<String, Object> respuesta = new LinkedHashMap<>();
+   public static boolean iniciarSesionTutor(String numeroPersonal, String password) {
         try {
-            ResultSet resultado = AutenticacionDAO.autenticarUsuario(noPersonal, password, ConexionBD.abrirConexionBD());
-            if (resultado.next()) {
-                Tutor tutorSesion = new Tutor();
-                tutorSesion.setIdTutor(resultado.getInt("idTutor"));
-                tutorSesion.setNumeroDePersonal(resultado.getString("numeroDePersonal"));
-                tutorSesion.setNombre(resultado.getString("nombre"));
-                tutorSesion.setApellidoPaterno(resultado.getString("apellidoPaterno"));
-                tutorSesion.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-                tutorSesion.setCorreo(resultado.getString("correo"));
-                tutorSesion.setPassword(resultado.getString("password"));
-
-                respuesta.put("error", false);
-                respuesta.put("mensaje", "Credenciales correctas");
-                respuesta.put("tutor", tutorSesion);
-            } else {
-                respuesta.put("error", true);
-                respuesta.put("mensaje", "Las credenciales proporcionadas son incorrectas, por favor verifica la información.");
+            Tutor tutor = AutenticacionDAO.verificarSesionTutor(numeroPersonal, password);
+            if (tutor != null) {
+                Sesion.setTutorSesion(tutor);
+                return true;
             }
-            ConexionBD.cerrarConexionBD();
         } catch (SQLException ex) {
-            respuesta.put("error", true);
-            respuesta.put("mensaje", ex.getMessage());
+            ex.printStackTrace();
         }
-        return respuesta;
+        return false;
     }
 }

@@ -45,48 +45,38 @@ public class FXMLInicioSesionController implements Initializable {
 
     @FXML
     private void btnClicIniciarSesion(ActionEvent event) {
-        String noPersonal = tfUsuario.getText();
+        String usuario = tfUsuario.getText();
         String password = pfContrasenia.getText();
-        validarSesion(noPersonal, password);
 
+        if (usuario.isEmpty() || password.isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Campos vacíos",
+                    "Por favor ingresa usuario y contraseña", Alert.AlertType.WARNING);
+        } else {
+            // Verificamos si es Tutor (aquí podrías agregar 'else if' para coordinadores en el futuro)
+            boolean esTutor = AutenticacionImp.iniciarSesionTutor(usuario, password);
+
+            if (esTutor) {
+                Utilidades.mostrarAlertaSimple("Bienvenido",
+                        "Credenciales correctas", Alert.AlertType.INFORMATION);
+                irMenuPrincipal();
+            } else {
+                Utilidades.mostrarAlertaSimple("Error",
+                        "Credenciales incorrectas", Alert.AlertType.ERROR);
+            }
+        }
     }
 
-    private void validarSesion(String noPersonal, String password) {
-    HashMap<String, Object> respuesta = AutenticacionImp.verificarSesionTutor(noPersonal, password);
-
-    boolean error = (boolean) respuesta.get("error");
-    if (!error) {
-        Tutor tutorSesion = (Tutor) respuesta.get("tutor");
-        Utilidades.mostrarAlertaSimple(
-                "Credenciales correctas",
-                "Bienvenido(a) tutor " + tutorSesion.getNombre() + ", al sistema de administración de tutorias.",
-                Alert.AlertType.INFORMATION
-        );
-        irPantallaPrincipal(tutorSesion);
-    } else {
-        Utilidades.mostrarAlertaSimple(
-                "Credenciales incorrectas",
-                "No. de personal y/o contraseña incorrectos, por favor verifica la información",
-                Alert.AlertType.ERROR
-        );
-    }
-}
-
-
-    private void irPantallaPrincipal(Tutor tutorSesion) {
+    private void irMenuPrincipal() {
         try {
-            FXMLLoader cargador = new FXMLLoader(SistemaTutorias.class.getResource("vista/FXMLMenuPrincipal.fxml"));
-            Parent vista = cargador.load();
-            FXMLMenuPrincipalController controlador = cargador.getController();
-            //Creamos escena y reutilizamos escenario
-            Scene escena = new Scene(vista);
             Stage escenario = (Stage) tfUsuario.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/sistematutorias/vista/FXMLMenuPrincipal.fxml"));
+            Parent root = loader.load();
+            Scene escena = new Scene(root);
             escenario.setScene(escena);
-            escenario.setTitle("Inicio");
-            escenario.showAndWait();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            escenario.setTitle("Menú Principal");
+            escenario.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 

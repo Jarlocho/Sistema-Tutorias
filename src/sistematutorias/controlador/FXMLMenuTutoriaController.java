@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import utilidad.Sesion;
 
 /**
  * FXML Controller class
@@ -17,13 +19,41 @@ import javafx.fxml.Initializable;
  */
 public class FXMLMenuTutoriaController implements Initializable {
 
+    @FXML
+    private Button btnRegistrarHorario;
+    @FXML
+    private Button btnRegistrarAsistencia;
+    @FXML
+    private Button btnRegistrarFechaTutoria;
+    @FXML
+    private Button btnAsignarTutorado;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        configurarVistaPorRol();
+    }
+
+    private void configurarVistaPorRol() {
+        String rol = Sesion.getRolActual();
+
+        // Ocultar todo por defecto
+        btnRegistrarHorario.setVisible(false);
+        btnRegistrarAsistencia.setVisible(false);
+        if (btnRegistrarFechaTutoria != null && btnAsignarTutorado != null) {
+            btnRegistrarFechaTutoria.setVisible(false);
+            btnAsignarTutorado.setVisible(false);
+
+        }
+
+        if ("TUTOR".equals(rol)) {
+            // Mostrar solo lo que pediste
+            btnRegistrarHorario.setVisible(true);
+            btnRegistrarAsistencia.setVisible(true);
+        }
+    }
 
     @FXML
     private void clicRegistrarHoraTutoria(ActionEvent event) {
@@ -40,5 +70,5 @@ public class FXMLMenuTutoriaController implements Initializable {
     @FXML
     private void clicAsignarTutorado(ActionEvent event) {
     }
-    
+
 }

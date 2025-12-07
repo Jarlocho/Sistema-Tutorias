@@ -6,11 +6,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="sistematutorias.controlador.FXMLMenuPrincipalController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutorias.controlador.FXMLMenuPrincipalController">
    <children>
-      <Button layoutX="267.0" layoutY="104.0" mnemonicParsing="false" onAction="#btnClicTutoria" text="Tutoria" />
-      <Button layoutX="264.0" layoutY="169.0" mnemonicParsing="false" onAction="#btnClicReporte" text="Reporte" />
-      <Button layoutX="262.0" layoutY="245.0" mnemonicParsing="false" onAction="#btnClicPersonal" text="Personal" />
+      <Button fx:id="btnTutoria" layoutX="267.0" layoutY="104.0" mnemonicParsing="false" onAction="#btnClicTutoria" text="Tutoria" />
+      <Button fx:id="btnReporte" layoutX="264.0" layoutY="169.0" mnemonicParsing="false" onAction="#btnClicReporte" text="Reporte" />
+      <Button fx:id="btnPersonal" layoutX="262.0" layoutY="245.0" mnemonicParsing="false" onAction="#btnClicPersonal" text="Personal" />
    </children>
 </AnchorPane>

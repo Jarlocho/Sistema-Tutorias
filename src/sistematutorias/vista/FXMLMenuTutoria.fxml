@@ -8,9 +8,9 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutorias.controlador.FXMLMenuTutoriaController">
    <children>
-      <Button layoutX="54.0" layoutY="84.0" mnemonicParsing="false" onAction="#clicRegistrarHoraTutoria" text="Registrar Horario de Tutoria CU-3" />
-      <Button layoutX="54.0" layoutY="145.0" mnemonicParsing="false" onAction="#clicRegistrarAsistenciaTutorado" text="Registrar Asistencia de Tutorado CU-5" />
-      <Button layoutX="54.0" layoutY="215.0" mnemonicParsing="false" onAction="#clicRegistrarFechaTutoria" text="Regsitrar Fecha de Tutoria CU-28" />
-      <Button layoutX="54.0" layoutY="277.0" mnemonicParsing="false" onAction="#clicAsignarTutorado" text="Asignar Tutorado CU-23" />
+      <Button fx:id="btnRegistrarHorario" layoutX="54.0" layoutY="84.0" mnemonicParsing="false" onAction="#clicRegistrarHoraTutoria" text="Registrar Horario de Tutoria CU-3" />
+      <Button fx:id="btnRegistrarAsistencia" layoutX="54.0" layoutY="145.0" mnemonicParsing="false" onAction="#clicRegistrarAsistenciaTutorado" text="Registrar Asistencia de Tutorado CU-5" />
+      <Button fx:id="btnRegistrarFechaTutoria" layoutX="54.0" layoutY="215.0" mnemonicParsing="false" onAction="#clicRegistrarFechaTutoria" text="Regsitrar Fecha de Tutoria CU-28" />
+      <Button fx:id="btnAsignarTutorado" layoutX="54.0" layoutY="277.0" mnemonicParsing="false" onAction="#clicAsignarTutorado" text="Asignar Tutorado CU-23" />
    </children>
 </AnchorPane>
