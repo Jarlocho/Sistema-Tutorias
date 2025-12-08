@@ -2,10 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
+ /*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ */
 package sistematutorias.controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sistematutorias.SistemaTutorias;
+import sistematutorias.dominio.ReporteTutoriaImp; // Importante
 import utilidad.Sesion;
 import utilidad.Utilidades;
 
@@ -48,20 +54,23 @@ public class FXMLMenuReporteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarVistaPorRol();
     }
-
     private void configurarVistaPorRol() {
         String rol = Sesion.getRolActual();
-
-        // Ocultar todo
         btnGenerarReporte.setVisible(false);
         btnEnviarReporte.setVisible(false);
-        if (btnResponderReporteTutoria != null && btnGenerarReporteGeneral != null && btnRevisarReporteGeneral != null && btnResponderReporteGeneral != null) {
+
+        if (btnResponderReporteTutoria != null) {
             btnResponderReporteTutoria.setVisible(false);
+        }
+        if (btnGenerarReporteGeneral != null) {
             btnGenerarReporteGeneral.setVisible(false);
+        }
+        if (btnRevisarReporteGeneral != null) {
             btnRevisarReporteGeneral.setVisible(false);
+        }
+        if (btnResponderReporteGeneral != null) {
             btnResponderReporteGeneral.setVisible(false);
         }
-
         if ("TUTOR".equals(rol)) {
             btnGenerarReporte.setVisible(true);
             btnEnviarReporte.setVisible(true);
@@ -70,6 +79,18 @@ public class FXMLMenuReporteController implements Initializable {
 
     @FXML
     private void clicGenerarReporteTutoria(ActionEvent event) {
+        int idTutor = Sesion.getTutorSesion().getIdTutor();
+        HashMap<String, Object> respuesta = ReporteTutoriaImp.obtenerSesionesPendientes(idTutor);
+        if (!(boolean) respuesta.get("error")) {
+            abrirVentanaGenerarReporte();
+        } else {
+            Utilidades.mostrarAlertaSimple("Sin pendientes",
+                    (String) respuesta.get("mensaje"),
+                    Alert.AlertType.INFORMATION);
+        }
+    }
+
+    private void abrirVentanaGenerarReporte() {
         try {
             FXMLLoader cargador = new FXMLLoader(
                     SistemaTutorias.class.getResource("vista/reporte/FXMLGenerarReporteTutoria.fxml")
@@ -86,7 +107,7 @@ public class FXMLMenuReporteController implements Initializable {
             ex.printStackTrace();
             Utilidades.mostrarAlertaSimple(
                     "Error",
-                    "No se pudo abrir la ventana para generar el reporte de tutoría.\nVerifique la ruta del archivo FXML.",
+                    "No se pudo abrir la ventana para generar el reporte de tutoría.",
                     Alert.AlertType.ERROR
             );
         }
@@ -94,6 +115,7 @@ public class FXMLMenuReporteController implements Initializable {
 
     @FXML
     private void clicEnviarReporteTutoria(ActionEvent event) {
+        // Pendiente para siguiente CU
     }
 
     @FXML
@@ -125,5 +147,4 @@ public class FXMLMenuReporteController implements Initializable {
             ex.printStackTrace();
         }
     }
-
 }

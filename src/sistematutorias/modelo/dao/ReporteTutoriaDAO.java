@@ -16,16 +16,18 @@ import sistematutorias.modelo.pojo.Tutoria;
 
 public class ReporteTutoriaDAO {
 
-    public static ArrayList<Tutoria> obtenerSesionesPendientes(int idTutor, int idPeriodo) throws SQLException {
+   public static ArrayList<Tutoria> obtenerSesionesPendientes(int idTutor, int idPeriodo) throws SQLException {
         ArrayList<Tutoria> sesiones = new ArrayList<>();
         Connection conexion = ConexionBD.abrirConexionBD();
         if (conexion != null) {
             try {
+          
                 String sql = "SELECT t.idTutoria, t.fecha, t.hora_inicio " +
                              "FROM tutoria t " +
                              "LEFT JOIN reportetutoria r ON r.idTutoria = t.idTutoria " +
                              "WHERE t.idTutor = ? AND t.idPeriodo = ? " +
-                             "AND r.idTutoria IS NULL " + 
+                             "AND r.idTutoria IS NULL " +  
+                             "AND EXISTS (SELECT 1 FROM asistencia a WHERE a.idTutoria = t.idTutoria) " + 
                              "ORDER BY t.fecha, t.hora_inicio";
                              
                 PreparedStatement ps = conexion.prepareStatement(sql);

@@ -15,14 +15,16 @@ import sistematutorias.modelo.pojo.Tutoria;
 
 public class AsistenciaDAO {
 
-    public static ArrayList<Tutoria> obtenerSesionesPorTutor(int idTutor) throws SQLException {
+    public static ArrayList<Tutoria> obtenerSesionesPorTutor(int idTutor, int idPeriodo) throws SQLException {
         ArrayList<Tutoria> sesiones = new ArrayList<>();
         Connection conexion = ConexionBD.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "SELECT idTutoria, fecha, hora_inicio FROM tutoria WHERE idTutor = ? ORDER BY fecha DESC";
+                String consulta = "SELECT idTutoria, fecha, hora_inicio FROM tutoria WHERE idTutor = ? AND idPeriodo = ? ORDER BY fecha DESC";
                 PreparedStatement ps = conexion.prepareStatement(consulta);
                 ps.setInt(1, idTutor);
+                ps.setInt(2, idPeriodo); // Usamos el parámetro nuevo
+                
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     Tutoria t = new Tutoria();
@@ -38,29 +40,38 @@ public class AsistenciaDAO {
         return sesiones;
     }
 
-    public static ArrayList<AsistenciaRow> obtenerTutoradosPorTutor(int idTutor, int idPeriodo) throws SQLException {
+    public static ArrayList<AsistenciaRow> obtenerTutoradosPorTutor(int idTutor, int idPeriodo, int idTutoria) throws SQLException {
         ArrayList<AsistenciaRow> lista = new ArrayList<>();
         Connection conexion = ConexionBD.abrirConexionBD();
+        
         if (conexion != null) {
             try {
                 String consulta = "SELECT t.idTutorado, t.matricula, " +
                                   "CONCAT(t.nombre, ' ', t.apellidoPaterno, ' ', t.apellidoMaterno) as nombreC, " +
-                                  "t.semestre " +
+                                  "t.semestre, " +
+                                  "asi.asistio " + // <-- Traemos el campo asistio (puede ser NULL, 0 o 1)
                                   "FROM tutorado t " +
                                   "INNER JOIN asignaciontutor a ON t.idTutorado = a.idTutorado " +
-                                  "WHERE a.idTutor = ? AND a.idPeriodo = ?"; 
+                                  "LEFT JOIN asistencia asi ON (asi.idTutorado = t.idTutorado AND asi.idTutoria = ?) " + // <-- Filtramos por la sesión actual
+                                  "WHERE a.idTutor = ? AND a.idPeriodo = ?";
 
                 PreparedStatement ps = conexion.prepareStatement(consulta);
-                ps.setInt(1, idTutor);
-                ps.setInt(2, idPeriodo);                
+                ps.setInt(1, idTutoria); // Pasamos el ID de la sesión seleccionada
+                ps.setInt(2, idTutor);
+                ps.setInt(3, idPeriodo);
+                
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
+                    // Si asistio es NULL (no se ha pasado lista), lo tomamos como false (0)
+                    boolean estadoAsistencia = rs.getBoolean("asistio"); 
+                    // getBoolean devuelve false si es NULL o 0, y true si es 1. Perfecto.
+
                     lista.add(new AsistenciaRow(
                         rs.getInt("idTutorado"),
                         rs.getString("matricula"),
                         rs.getString("nombreC"),
                         rs.getInt("semestre"),
-                        false 
+                        estadoAsistencia // <-- Usamos el valor real de la BD
                     ));
                 }
             } finally {

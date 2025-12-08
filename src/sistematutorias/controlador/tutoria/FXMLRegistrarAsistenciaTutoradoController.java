@@ -168,9 +168,13 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
     }
 
     private void cargarAlumnos() {
+        Tutoria sesion = cbSesiones.getValue();
+        if (sesion == null) {
+            limpiarTablaAsistencia();
+            return;
+        }
         int idTutor = Sesion.getTutorSesion().getIdTutor();
-        HashMap<String, Object> respuesta = AsistenciaImp.obtenerListaAsistencia(idTutor);
-
+        HashMap<String, Object> respuesta = AsistenciaImp.obtenerListaAsistencia(idTutor, sesion.getIdTutoria());
         if (!(boolean) respuesta.get("error")) {
             listaAlumnos = FXCollections.observableArrayList(
                     (ArrayList<AsistenciaRow>) respuesta.get("tutorados")

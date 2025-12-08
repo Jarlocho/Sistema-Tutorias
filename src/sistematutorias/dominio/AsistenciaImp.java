@@ -13,13 +13,14 @@ import sistematutorias.modelo.pojo.Tutoria;
 
 public class AsistenciaImp {
 
-    public static HashMap<String, Object> obtenerSesionesTutor(int idTutor) {
+   public static HashMap<String, Object> obtenerSesionesTutor(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
-            ArrayList<Tutoria> lista = AsistenciaDAO.obtenerSesionesPorTutor(idTutor);
+            int idPeriodo = utilidad.Sesion.getIdPeriodoActual();
+            ArrayList<Tutoria> lista = AsistenciaDAO.obtenerSesionesPorTutor(idTutor, idPeriodo);
             if (lista.isEmpty()) {
                 respuesta.put("error", true);
-                respuesta.put("mensaje", "No tienes sesiones registradas.");
+                respuesta.put("mensaje", "No tienes sesiones registradas para el periodo actual.");
             } else {
                 respuesta.put("error", false);
                 respuesta.put("sesiones", lista);
@@ -31,11 +32,11 @@ public class AsistenciaImp {
         return respuesta;
     }
 
-    public static HashMap<String, Object> obtenerListaAsistencia(int idTutor) {
+    public static HashMap<String, Object> obtenerListaAsistencia(int idTutor, int idTutoria) {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
             int idPeriodo = utilidad.Sesion.getIdPeriodoActual();
-            ArrayList<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(idTutor, idPeriodo);
+            ArrayList<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(idTutor, idPeriodo, idTutoria);
             respuesta.put("error", false);
             respuesta.put("tutorados", lista);
         } catch (SQLException ex) {
