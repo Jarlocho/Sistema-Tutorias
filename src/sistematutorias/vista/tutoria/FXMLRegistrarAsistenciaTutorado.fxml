@@ -40,7 +40,7 @@
                     <children>
 
                         <!-- Texto de guía -->
-                        <Label maxWidth="700.0" text="Seleccione la sesión de tutoría y marque la asistencia de sus tutorados." textFill="#666666" wrapText="true">
+                        <Label maxWidth="700.0" text="Marque la asistencia de sus tutorados" textFill="#666666" wrapText="true">
                             <font>
                                 <Font name="Segoe UI" size="15.0" />
                             </font>
@@ -66,7 +66,7 @@
                                             </font>
                                         </Label>
                                         <!-- Por simplicidad, lo dejamos sin tipo genérico -->
-                                        <ComboBox fx:id="cbSesiones" prefWidth="320.0" promptText="Seleccione una sesión (fecha y hora)" />
+                                        <ComboBox fx:id="cbSesiones" prefWidth="320.0" promptText="Seleccione una sesión" />
                                     </children>
                                 </HBox>
 
@@ -80,15 +80,15 @@
                                 <TableView fx:id="tvAsistencia" prefHeight="300.0" tableMenuButtonVisible="false">
                                     <columns>
 
-                                        <TableColumn fx:id="colMatricula" prefWidth="120.0" text="Matrícula" />
+                                        <TableColumn fx:id="colMatricula" prefWidth="158.0" text="Matrícula" />
 
-                                        <TableColumn fx:id="colNombre" prefWidth="220.0" text="Nombre" />
+                                        <TableColumn fx:id="colNombre" prefWidth="208.0" text="Nombre" />
 
-                                        <TableColumn fx:id="colSemestre" prefWidth="80.0" text="Semestre" />
+                                        <TableColumn fx:id="colSemestre" prefWidth="127.0" text="Semestre" />
 
-                                        <TableColumn fx:id="colAsistio" prefWidth="90.0" text="Asistió" />
+                                        <TableColumn fx:id="colAsistio" prefWidth="133.0" text="Asistió" />
 
-                                        <TableColumn fx:id="colAcciones" prefWidth="160.0" text="Acciones" />
+                                        <TableColumn fx:id="colAcciones" prefWidth="153.0" text="Problematicas" />
 
                                     </columns>
                                 </TableView>
@@ -103,7 +103,7 @@
                                 <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 10 0 0 0;">
                                     <children>
 
-                                        <Button fx:id="btnSubirEvidencia" disable="true" onAction="#clicSubirEvidencia" style="-fx-background-color: #6a1b9a;                                                        -fx-text-fill: white;                                                        -fx-background-radius: 8;                                                        -fx-padding: 6 14;                                                        -fx-cursor: hand;" text="Subir evidencia (CU-10)">
+                                        <Button fx:id="btnSubirEvidencia" disable="true" onAction="#clicSubirEvidencia" style="-fx-background-color: #6a1b9a;                                                        -fx-text-fill: white;                                                        -fx-background-radius: 8;                                                        -fx-padding: 6 14;                                                        -fx-cursor: hand;" text="Subir evidencia">
                                             <font>
                                                 <Font name="Segoe UI Semibold" size="13.0" />
                                             </font>

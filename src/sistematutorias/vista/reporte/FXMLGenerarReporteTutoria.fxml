@@ -32,9 +32,9 @@
             </top>
 
             <center>
-                <VBox alignment="TOP_CENTER" spacing="18.0" style="-fx-padding: 24;">
+                <VBox alignment="TOP_CENTER" prefHeight="470.0" prefWidth="902.0" spacing="18.0" style="-fx-padding: 24;">
                     <children>
-                        <Label maxWidth="750.0" text="Seleccione la sesión de tutoría para la cual desea generar el reporte. El sistema calculará automáticamente los totales basados en la asistencia y problemáticas registradas." textFill="#666666" wrapText="true">
+                        <Label maxWidth="825.0" prefHeight="23.0" prefWidth="802.0" text="El sistema calculará automáticamente los totales basados en la asistencia y problemáticas registradas" textFill="#666666" wrapText="true">
                             <font>
                                 <Font name="Segoe UI" size="14.0" />
                             </font>
@@ -57,7 +57,7 @@
                                                 <Font name="Segoe UI Semibold" size="14.0" />
                                             </font>
                                         </Label>
-                                        <ComboBox fx:id="cbSesiones" prefWidth="350.0" promptText="Seleccione una sesión pendiente..." />
+                                        <ComboBox fx:id="cbSesiones" prefWidth="350.0" promptText="Seleccione una sesión pendiente" />
                                     </children>
                                 </HBox>
 
@@ -114,7 +114,7 @@
                                                 <Font name="Segoe UI Semibold" size="14.0" />
                                             </font>
                                         </Label>
-                                        <TextArea fx:id="taObservaciones" prefHeight="100.0" prefWidth="200.0" promptText="Escriba aquí los comentarios generales sobre la sesión..." style="-fx-background-radius: 5; -fx-border-color: #bdbdbd; -fx-border-radius: 5;" wrapText="true" />
+                                        <TextArea fx:id="taObservaciones" prefHeight="100.0" prefWidth="200.0" promptText="Escriba aquí los comentarios generales sobre la sesión" style="-fx-background-radius: 5; -fx-border-color: #bdbdbd; -fx-border-radius: 5;" wrapText="true" />
                                     </children>
                                 </VBox>
 

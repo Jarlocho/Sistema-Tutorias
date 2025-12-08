@@ -75,14 +75,14 @@
                                     <children>
 
                                         <!-- Registrar Horario de Tutoría CU-3 -->
-                                        <Button fx:id="btnRegistrarHorario" onAction="#clicRegistrarHoraTutoria" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #18529d;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Registrar Horario de Tutoría (CU-3)">
+                                        <Button fx:id="btnRegistrarHorario" onAction="#clicRegistrarHoraTutoria" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #18529d;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Registrar Horario de Tutoría">
                                             <font>
                                                 <Font name="Segoe UI Semibold" size="15.0" />
                                             </font>
                                         </Button>
 
                                         <!-- Registrar Asistencia de Tutorado CU-5 -->
-                                        <Button fx:id="btnRegistrarAsistencia" onAction="#clicRegistrarAsistenciaTutorado" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #1565c0;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Registrar Asistencia de Tutorado (CU-5)">
+                                        <Button fx:id="btnRegistrarAsistencia" onAction="#clicRegistrarAsistenciaTutorado" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #1565c0;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Registrar Asistencia de Tutorado">
                                             <font>
                                                 <Font name="Segoe UI Semibold" size="15.0" />
                                             </font>

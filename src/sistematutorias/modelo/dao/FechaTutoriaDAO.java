@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List; // Ojo: Importa List o ArrayList según prefieras
 import sistematutorias.modelo.ConexionBD;
 import sistematutorias.modelo.pojo.FechaTutoria;
 
