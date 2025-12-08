@@ -18,7 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import sistematutorias.SistemaTutorias;
-import sistematutorias.dominio.AsistenciaImp; // <--- IMPORTANTE: Agregamos este import
+import sistematutorias.dominio.AsistenciaImp; 
 import sistematutorias.dominio.TutoriaImp;
 import utilidad.Sesion;
 import utilidad.Utilidades;
@@ -50,7 +50,6 @@ public class FXMLMenuTutoriaController implements Initializable {
     private void configurarVistaPorRol() {
         String rol = Sesion.getRolActual();
 
-        // Ocultar todo por defecto
         btnRegistrarHorario.setVisible(false);
         btnRegistrarAsistencia.setVisible(false);
         if (btnRegistrarFechaTutoria != null && btnAsignarTutorado != null) {
@@ -60,7 +59,6 @@ public class FXMLMenuTutoriaController implements Initializable {
         }
 
         if ("TUTOR".equals(rol)) {
-            // Mostrar solo lo que pediste
             btnRegistrarHorario.setVisible(true);
             btnRegistrarAsistencia.setVisible(true);
         }

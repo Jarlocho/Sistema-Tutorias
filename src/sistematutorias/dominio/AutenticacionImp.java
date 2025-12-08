@@ -6,19 +6,27 @@ package sistematutorias.dominio;
 
 import java.sql.SQLException;
 import sistematutorias.modelo.dao.AutenticacionDAO;
+import sistematutorias.modelo.dao.PeriodoDAO; // Importar el nuevo DAO
 import sistematutorias.modelo.pojo.Tutor;
 import utilidad.Sesion;
 
-/**
- *
- * @author HP
- */
 public class AutenticacionImp {
-   public static boolean iniciarSesionTutor(String numeroPersonal, String password) {
+    
+    public static boolean iniciarSesionTutor(String numeroPersonal, String password) {
         try {
             Tutor tutor = AutenticacionDAO.verificarSesionTutor(numeroPersonal, password);
             if (tutor != null) {
                 Sesion.setTutorSesion(tutor);
+                try {
+                    int idPeriodo = PeriodoDAO.obtenerIdPeriodoActual();
+                    if (idPeriodo > 0) {
+                        Sesion.setIdPeriodoActual(idPeriodo);
+                    } else {
+                        System.out.println("ADVERTENCIA: No se encontró un periodo activo en la BD.");
+                    }
+                } catch (SQLException exPeriodo) {
+                    System.err.println("Error al obtener periodo: " + exPeriodo.getMessage());
+                }
                 return true;
             }
         } catch (SQLException ex) {

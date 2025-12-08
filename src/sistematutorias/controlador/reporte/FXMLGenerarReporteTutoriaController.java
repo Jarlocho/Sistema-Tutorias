@@ -2,6 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ */
 package sistematutorias.controlador.reporte;
 
 import java.net.URL;
@@ -37,15 +41,22 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        configurarAreaTexto(); 
         cargarSesionesPendientes();
         configurarListenerComboBox();
     }    
 
+    private void configurarAreaTexto() {
+        taObservaciones.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 500) {
+                taObservaciones.setText(oldValue); 
+            }
+        });
+    }
+
     private void cargarSesionesPendientes() {
         int idTutor = Sesion.getTutorSesion().getIdTutor();
-        
         HashMap<String, Object> respuesta = ReporteTutoriaImp.obtenerSesionesPendientes(idTutor);
-        
         if (!(boolean) respuesta.get("error")) {
             ArrayList<Tutoria> lista = (ArrayList<Tutoria>) respuesta.get("sesiones");
             ObservableList<Tutoria> sesionesObs = FXCollections.observableArrayList(lista);
@@ -72,10 +83,8 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
 
     private void cargarTotales(int idTutoria) {
         HashMap<String, Object> respuesta = ReporteTutoriaImp.cargarTotales(idTutoria);
-        
         if (!(boolean) respuesta.get("error")) {
             HashMap<String, Integer> totales = (HashMap<String, Integer>) respuesta.get("totales");
-            
             lbTotalTutorados.setText(String.valueOf(totales.get("tutorados")));
             lbTotalAsistentes.setText(String.valueOf(totales.get("asistentes")));
             lbTotalInasistentes.setText(String.valueOf(totales.get("faltantes")));
@@ -95,23 +104,25 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
     @FXML
     private void clicGenerar(ActionEvent event) {
         Tutoria sesionSeleccionada = cbSesiones.getValue();
-        String observaciones = taObservaciones.getText();
-        
+        String observaciones = taObservaciones.getText() != null ? taObservaciones.getText().trim() : "";
         if (sesionSeleccionada == null) {
             Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor seleccione una sesión de tutoría.", Alert.AlertType.WARNING);
             return;
         }
-        
-        if (observaciones.trim().isEmpty()) {
+        if (observaciones.isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "Es necesario escribir las observaciones generales.", Alert.AlertType.WARNING);
             return;
         }
-        
+        if (observaciones.length() > 500) {
+            Utilidades.mostrarAlertaSimple("Texto muy largo", 
+                "Las observaciones no pueden exceder los 500 caracteres. Actual: " + observaciones.length(), 
+                Alert.AlertType.WARNING);
+            return;
+        }
         ReporteTutoria nuevoReporte = new ReporteTutoria();
         nuevoReporte.setIdTutoria(sesionSeleccionada.getIdTutoria());
         nuevoReporte.setObservaciones(observaciones);
         HashMap<String, Object> respuesta = ReporteTutoriaImp.guardarReporte(nuevoReporte);
-        
         if (!(boolean) respuesta.get("error")) {
             Utilidades.mostrarAlertaSimple("Reporte Generado", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
             cerrarVentana();
@@ -125,6 +136,11 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
         cerrarVentana();
     }
     
+    @FXML
+    private void clicCancelar(ActionEvent event) {
+        cerrarVentana();
+    }
+
     private void cerrarVentana() {
         Stage stage = (Stage) btnGenerar.getScene().getWindow();
         stage.close();

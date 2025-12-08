@@ -33,7 +33,7 @@ import utilidad.Utilidades;
 public class FXMLRegistrarHoraTutoriaController implements Initializable {
 
     @FXML
-    private ComboBox<FechaTutoria> cbFechas; 
+    private ComboBox<FechaTutoria> cbFechas;
     @FXML
     private Spinner<Integer> spHora;
     @FXML
@@ -47,14 +47,11 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarSpinners();
         cargarFechas();
-    }    
+    }
 
     private void configurarSpinners() {
-        // Horas de 7 a 20
         SpinnerValueFactory<Integer> horasFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(7, 20, 10);
         spHora.setValueFactory(horasFactory);
-        
-        // Minutos de 0 a 59
         SpinnerValueFactory<Integer> minutosFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0);
         spMinuto.setValueFactory(minutosFactory);
     }
@@ -72,23 +69,31 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
     private void clicRegistrar(ActionEvent event) {
         lbErrorFecha.setText("");
         lbErrorHora.setText("");
-        
         FechaTutoria fechaSeleccionada = cbFechas.getValue();
         Integer hora = spHora.getValue();
         Integer minuto = spMinuto.getValue();
-
+        boolean valido = true;
         if (fechaSeleccionada == null) {
-            lbErrorFecha.setText("Selecciona una fecha");
+            lbErrorFecha.setText("Selecciona una fecha.");
+            lbErrorFecha.setVisible(true); // Asegurar visibilidad
+            valido = false;
+        }
+        if (hora == null || hora < 7 || hora > 20) {
+            lbErrorHora.setText("Hora inválida (7-20).");
+            lbErrorHora.setVisible(true);
+            valido = false;
+        }
+        if (minuto == null || minuto < 0 || minuto > 59) {
+             valido = false;
+        }
+        if (!valido) {
             return;
         }
-
-        // Construir objeto Tutoria
         Tutoria nuevaTutoria = new Tutoria();
-        nuevaTutoria.setIdTutor(Sesion.getTutorSesion().getIdTutor()); // Sacamos ID de la sesión
-        // nuevaTutoria.setIdPeriodo(Sesion.getIdPeriodoActual()); // Implementar si tienes lógica de periodos
+        nuevaTutoria.setIdTutor(Sesion.getTutorSesion().getIdTutor());
+        nuevaTutoria.setIdPeriodo(Sesion.getIdPeriodoActual());
         nuevaTutoria.setFecha(fechaSeleccionada.getFecha());
         nuevaTutoria.setHoraInicio(LocalTime.of(hora, minuto));
-        
         guardarTutoria(nuevaTutoria);
     }
 

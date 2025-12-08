@@ -16,7 +16,6 @@ import sistematutorias.modelo.pojo.Tutoria;
 
 public class ReporteTutoriaDAO {
 
-    // 1. Obtener sesiones pendientes (Devuelve lista de Tutoria)
     public static ArrayList<Tutoria> obtenerSesionesPendientes(int idTutor, int idPeriodo) throws SQLException {
         ArrayList<Tutoria> sesiones = new ArrayList<>();
         Connection conexion = ConexionBD.abrirConexionBD();
@@ -26,7 +25,7 @@ public class ReporteTutoriaDAO {
                              "FROM tutoria t " +
                              "LEFT JOIN reportetutoria r ON r.idTutoria = t.idTutoria " +
                              "WHERE t.idTutor = ? AND t.idPeriodo = ? " +
-                             "AND r.idTutoria IS NULL " + // Solo las que NO tienen reporte
+                             "AND r.idTutoria IS NULL " + 
                              "ORDER BY t.fecha, t.hora_inicio";
                              
                 PreparedStatement ps = conexion.prepareStatement(sql);
@@ -48,14 +47,12 @@ public class ReporteTutoriaDAO {
         return sesiones;
     }
 
-    // 2. Calcular Totales (Devuelve un HashMap)
     public static HashMap<String, Integer> obtenerTotales(int idTutoria) throws SQLException {
         HashMap<String, Integer> totales = new HashMap<>();
         Connection conexion = ConexionBD.abrirConexionBD();
         
         if (conexion != null) {
             try {
-                // Consulta de asistencia
                 String sqlAsist = "SELECT COUNT(*) as total, " +
                                   "SUM(CASE WHEN asistio = 1 THEN 1 ELSE 0 END) as asistentes, " +
                                   "SUM(CASE WHEN asistio = 0 THEN 1 ELSE 0 END) as faltantes " +
@@ -70,7 +67,6 @@ public class ReporteTutoriaDAO {
                     totales.put("faltantes", rs.getInt("faltantes"));
                 }
                 
-                // Consulta de problemáticas
                 String sqlProb = "SELECT COUNT(*) as total FROM problematica WHERE idTutoria = ?";
                 PreparedStatement ps2 = conexion.prepareStatement(sqlProb);
                 ps2.setInt(1, idTutoria);
@@ -86,7 +82,6 @@ public class ReporteTutoriaDAO {
         return totales;
     }
 
-    // 3. Guardar Reporte
     public static boolean registrarReporte(ReporteTutoria reporte) throws SQLException {
         boolean resultado = false;
         Connection conexion = ConexionBD.abrirConexionBD();
@@ -97,7 +92,7 @@ public class ReporteTutoriaDAO {
                 PreparedStatement ps = conexion.prepareStatement(sql);
                 ps.setInt(1, reporte.getIdTutoria());
                 ps.setString(2, reporte.getObservaciones());
-                ps.setString(3, "BORRADOR"); // Por defecto
+                ps.setString(3, "BORRADOR"); 
                 
                 resultado = (ps.executeUpdate() > 0);
             } finally {

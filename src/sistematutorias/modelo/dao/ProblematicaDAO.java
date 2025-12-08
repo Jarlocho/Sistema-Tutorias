@@ -25,10 +25,8 @@ public class ProblematicaDAO {
                 sentencia.setInt(2, problematica.getIdTutoria());
                 sentencia.setString(3, problematica.getTitulo());
                 sentencia.setString(4, problematica.getDescripcion());
-                // Convertimos LocalDate a java.sql.Date
                 sentencia.setDate(5, Date.valueOf(problematica.getFecha())); 
-                sentencia.setString(6, "ABIERTA"); // Estatus inicial por defecto
-                
+                sentencia.setString(6, "ABIERTA"); 
                 int filasAfectadas = sentencia.executeUpdate();
                 resultado = (filasAfectadas > 0);
             } finally {

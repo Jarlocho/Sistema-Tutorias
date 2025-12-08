@@ -55,7 +55,6 @@ public class FXMLInicioSesionController implements Initializable {
 
     private boolean sonDatosValidos(String usuario, String password) {
         boolean correcto = true;
-
         limpiarMensajesError();
 
         if (usuario == null || usuario.trim().isEmpty()) {

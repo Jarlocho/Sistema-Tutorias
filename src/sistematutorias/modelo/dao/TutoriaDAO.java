@@ -24,20 +24,19 @@ public class TutoriaDAO {
                 String consulta = "INSERT INTO tutoria (idTutor, idPeriodo, fecha, hora_inicio) VALUES (?, ?, ?, ?)";
                 PreparedStatement sentencia = conexion.prepareStatement(consulta);
                 sentencia.setInt(1, tutoria.getIdTutor());
-                sentencia.setInt(2, 1); // Hardcodeo idPeriodo = 1 temporalmente // IMPORTANTE: Aquí deberías usar tutoria.getIdPeriodo(). Hardcodeo 1 por ahora si no tienes gestión de periodos.
+                sentencia.setInt(2, tutoria.getIdPeriodo());
                 sentencia.setDate(3, Date.valueOf(tutoria.getFecha()));
                 sentencia.setTime(4, Time.valueOf(tutoria.getHoraInicio()));
                 resultado = sentencia.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace(); 
-                throw e; 
+                e.printStackTrace();
+                throw e;
             } finally {
                 ConexionBD.cerrarConexionBD();
             }
         }
         return resultado;
     }
-// Para verificar si el tutor ya agendó esa fecha específica
 
     public static boolean comprobarTutoriaRegistrada(int idTutor, java.time.LocalDate fecha) throws SQLException {
         boolean registrada = false;
@@ -59,7 +58,7 @@ public class TutoriaDAO {
         }
         return registrada;
     }
-    
+
     public static boolean subirEvidencia(int idTutoria, byte[] evidencia) throws SQLException {
         boolean resultado = false;
         Connection conexion = ConexionBD.abrirConexionBD();
@@ -67,9 +66,9 @@ public class TutoriaDAO {
             try {
                 String consulta = "UPDATE tutoria SET evidencia = ? WHERE idTutoria = ?";
                 PreparedStatement sentencia = conexion.prepareStatement(consulta);
-                sentencia.setBytes(1, evidencia); // Aquí guardamos el PDF
+                sentencia.setBytes(1, evidencia);
                 sentencia.setInt(2, idTutoria);
-                
+
                 int filasAfectadas = sentencia.executeUpdate();
                 resultado = (filasAfectadas > 0);
             } finally {

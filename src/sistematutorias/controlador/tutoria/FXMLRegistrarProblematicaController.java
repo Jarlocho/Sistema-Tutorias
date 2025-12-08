@@ -2,6 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ */
 package sistematutorias.controlador.tutoria;
 
 import java.net.URL;
@@ -34,9 +38,13 @@ public class FXMLRegistrarProblematicaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        tfTitulo.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 120) {
+                tfTitulo.setText(oldValue);
+            }
+        });
     }
 
-    // Método para recibir datos desde la ventana de Asistencia
     public void inicializarValores(int idTutoria, int idTutorado, String nombreAlumno) {
         this.idTutoria = idTutoria;
         this.idTutorado = idTutorado;
@@ -45,25 +53,41 @@ public class FXMLRegistrarProblematicaController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        String titulo = tfTitulo.getText();
-        String descripcion = taDescripcion.getText();
-
+        String titulo = tfTitulo.getText() != null ? tfTitulo.getText().trim() : "";
+        String descripcion = taDescripcion.getText() != null ? taDescripcion.getText().trim() : "";
         if (titulo.isEmpty() || descripcion.isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "Por favor llena todos los campos.", Alert.AlertType.WARNING);
             return;
         }
+        if (titulo.length() > 120) {
+            Utilidades.mostrarAlertaSimple("Título demasiado largo", 
+                "El título no puede exceder los 120 caracteres. Actualmente tiene " + titulo.length() + ".", 
+                Alert.AlertType.WARNING);
+            return;
+        }
+        if (descripcion.length() > 500) {
+            Utilidades.mostrarAlertaSimple("Descripción demasiado larga", 
+                "La descripción no puede exceder los 500 caracteres. Actualmente tiene " + descripcion.length() + ".", 
+                Alert.AlertType.WARNING);
+            return;
+        }
+        Problematica nuevaProblematica = prepararProblematica(titulo, descripcion);
+        enviarAlDominio(nuevaProblematica);
+    }
+    
+    private Problematica prepararProblematica(String titulo, String descripcion) {
+        Problematica p = new Problematica();
+        p.setIdTutoria(this.idTutoria);
+        p.setIdTutorado(this.idTutorado);
+        p.setTitulo(titulo);
+        p.setDescripcion(descripcion);
+        p.setFecha(LocalDate.now());
+        return p;
+    }
 
-        // Crear el objeto
-        Problematica nuevaProblematica = new Problematica();
-        nuevaProblematica.setIdTutoria(this.idTutoria);
-        nuevaProblematica.setIdTutorado(this.idTutorado);
-        nuevaProblematica.setTitulo(titulo);
-        nuevaProblematica.setDescripcion(descripcion);
-        nuevaProblematica.setFecha(LocalDate.now()); // Fecha de hoy
-
-        // Guardar
-        HashMap<String, Object> respuesta = ProblematicaImp.registrarProblematica(nuevaProblematica);
-
+    private void enviarAlDominio(Problematica problematica) {
+        HashMap<String, Object> respuesta = ProblematicaImp.registrarProblematica(problematica);
+        
         if (!(boolean) respuesta.get("error")) {
             Utilidades.mostrarAlertaSimple("Éxito", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
             cerrarVentana();

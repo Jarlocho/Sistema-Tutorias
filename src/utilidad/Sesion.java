@@ -14,6 +14,7 @@ public class Sesion {
     private static Tutor tutorSesion;
     // Aqui podrias agregar: private static Coordinador coordinadorSesion; para el futuro
     private static String rolActual; // "TUTOR", "COORDINADOR", "ADMINISTRADOR"
+    private static int idPeriodoActual;
 
     public static Tutor getTutorSesion() {
         return tutorSesion;
@@ -28,10 +29,19 @@ public class Sesion {
         return rolActual;
     }
     
+    public static int getIdPeriodoActual() {
+        return idPeriodoActual;
+    }
+
+    public static void setIdPeriodoActual(int idPeriodo) {
+        idPeriodoActual = idPeriodo;
+    }
+    
     // Método para limpiar al cerrar sesión
     public static void cerrarSesion() {
         tutorSesion = null;
         rolActual = null;
+        idPeriodoActual = 0;
     }
 }
 

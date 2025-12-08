@@ -118,6 +118,7 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void btnClicSalir(ActionEvent event) {
+        Sesion.cerrarSesion(); 
         try {
             Parent vista = FXMLLoader.load(SistemaTutorias.class.getResource("vista/FXMLInicioSesion.fxml"));
             Scene escena = new Scene(vista);

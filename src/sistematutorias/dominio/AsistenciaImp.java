@@ -34,7 +34,8 @@ public class AsistenciaImp {
     public static HashMap<String, Object> obtenerListaAsistencia(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
-            ArrayList<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(idTutor);
+            int idPeriodo = utilidad.Sesion.getIdPeriodoActual();
+            ArrayList<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(idTutor, idPeriodo);
             respuesta.put("error", false);
             respuesta.put("tutorados", lista);
         } catch (SQLException ex) {

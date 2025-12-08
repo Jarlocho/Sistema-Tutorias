@@ -5,39 +5,41 @@
 package sistematutorias.dominio;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import sistematutorias.modelo.ConexionBD;
+import sistematutorias.modelo.dao.FechaTutoriaDAO;
 import sistematutorias.modelo.dao.TutoriaDAO;
 import sistematutorias.modelo.pojo.FechaTutoria;
 import sistematutorias.modelo.pojo.Tutoria;
+import utilidad.Sesion;
 
 public class TutoriaImp {
 
-    // (El método obtenerFechasPeriodoActual queda igual porque es simulado)
     public static HashMap<String, Object> obtenerFechasPeriodoActual() {
         HashMap<String, Object> respuesta = new HashMap<>();
-        ArrayList<FechaTutoria> fechas = new ArrayList<>();
-
-        fechas.add(new FechaTutoria(1, 1, 1, LocalDate.now().plusDays(5)));
-        fechas.add(new FechaTutoria(2, 1, 2, LocalDate.now().plusDays(20)));
-        fechas.add(new FechaTutoria(3, 1, 3, LocalDate.now().plusDays(45)));
-
-        if (!fechas.isEmpty()) {
-            respuesta.put("error", false);
-            respuesta.put("fechas", fechas);
-        } else {
+        try {
+            int idPeriodo = Sesion.getIdPeriodoActual();
+            ArrayList<FechaTutoria> fechas = FechaTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo);
+            if (!fechas.isEmpty()) {
+                respuesta.put("error", false);
+                respuesta.put("fechas", fechas);
+            } else {
+                respuesta.put("error", true);
+                respuesta.put("mensaje", "No hay fechas de tutoría definidas por el coordinador para este periodo.");
+            }
+        } catch (SQLException ex) {
             respuesta.put("error", true);
-            respuesta.put("mensaje", "No hay fechas de tutoría definidas por el coordinador.");
+            respuesta.put("mensaje", "Error al consultar fechas: " + ex.getMessage());
+            ex.printStackTrace();
         }
+
         return respuesta;
     }
 
     public static HashMap<String, Object> registrarHorarioTutoria(Tutoria tutoria) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
-        
+
         try {
             // 1. Validar si ya registró esta fecha (Llamada limpia al DAO)
             if (TutoriaDAO.comprobarTutoriaRegistrada(tutoria.getIdTutor(), tutoria.getFecha())) {
@@ -56,10 +58,10 @@ public class TutoriaImp {
         } catch (SQLException ex) {
             respuesta.put("mensaje", "Error de base de datos: " + ex.getMessage());
         }
-        
+
         return respuesta;
     }
-    
+
     public static HashMap<String, Object> subirEvidencia(int idTutoria, byte[] archivo) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);

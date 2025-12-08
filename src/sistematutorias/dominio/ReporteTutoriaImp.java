@@ -10,17 +10,19 @@ import java.util.HashMap;
 import sistematutorias.modelo.dao.ReporteTutoriaDAO;
 import sistematutorias.modelo.pojo.ReporteTutoria;
 import sistematutorias.modelo.pojo.Tutoria;
+import utilidad.Sesion;
+
 
 public class ReporteTutoriaImp {
     
     public static HashMap<String, Object> obtenerSesionesPendientes(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
-            // Usamos periodo 1 hardcodeado por ahora
-            ArrayList<Tutoria> lista = ReporteTutoriaDAO.obtenerSesionesPendientes(idTutor, 1);
+            int periodoActual = Sesion.getIdPeriodoActual();
+            ArrayList<Tutoria> lista = ReporteTutoriaDAO.obtenerSesionesPendientes(idTutor, periodoActual);
             if (lista.isEmpty()) {
                 respuesta.put("error", true);
-                respuesta.put("mensaje", "No hay sesiones pendientes de reporte.");
+                respuesta.put("mensaje", "No hay sesiones pendientes de reporte en este periodo.");
             } else {
                 respuesta.put("error", false);
                 respuesta.put("sesiones", lista);
