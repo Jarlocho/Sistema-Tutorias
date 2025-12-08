@@ -77,10 +77,9 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
     private void inicializarEstadoUI() {
         listaAlumnos = FXCollections.observableArrayList();
         tvAsistencia.setItems(listaAlumnos);
-
         limpiarErrorSesion();
         ocultarMensajeInfo();
-
+        btnRegistrar.setDisable(false);
         btnSubirEvidencia.setDisable(true);
     }
 
@@ -99,45 +98,48 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
     }
 
     private void configurarColumnaAccionesProblematica() {
-        Callback<TableColumn<AsistenciaRow, Void>, TableCell<AsistenciaRow, Void>> cellFactory =
-                new Callback<TableColumn<AsistenciaRow, Void>, TableCell<AsistenciaRow, Void>>() {
+        Callback<TableColumn<AsistenciaRow, Void>, TableCell<AsistenciaRow, Void>> cellFactory
+                = new Callback<TableColumn<AsistenciaRow, Void>, TableCell<AsistenciaRow, Void>>() {
+            @Override
+            public TableCell<AsistenciaRow, Void> call(final TableColumn<AsistenciaRow, Void> param) {
+                return new TableCell<AsistenciaRow, Void>() {
+                    private final Button btn = new Button("Problemática");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> manejarClickProblematica());
+                    }
+
+                    private void manejarClickProblematica() {
+                        AsistenciaRow data = getTableView().getItems().get(getIndex());
+                        if (data == null) {
+                            return;
+                        }
+                        if (data.isAsistio()) {
+                            abrirVentanaProblematica(data.getIdTutorado(), data.getNombreCompleto());
+                        } else {
+                            Utilidades.mostrarAlertaSimple(
+                                    "Aviso",
+                                    "El alumno debe tener asistencia para registrar problemática.",
+                                    Alert.AlertType.WARNING
+                            );
+                        }
+                    }
+
                     @Override
-                    public TableCell<AsistenciaRow, Void> call(final TableColumn<AsistenciaRow, Void> param) {
-                        return new TableCell<AsistenciaRow, Void>() {
-                            private final Button btn = new Button("Problemática");
-                            {
-                                btn.setOnAction((ActionEvent event) -> manejarClickProblematica());
-                            }
-                            private void manejarClickProblematica() {
-                                AsistenciaRow data = getTableView().getItems().get(getIndex());
-                                if (data == null) {
-                                    return;
-                                }
-                                if (data.isAsistio()) {
-                                    abrirVentanaProblematica(data.getIdTutorado(), data.getNombreCompleto());
-                                } else {
-                                    Utilidades.mostrarAlertaSimple(
-                                            "Aviso",
-                                            "El alumno debe tener asistencia para registrar problemática.",
-                                            Alert.AlertType.WARNING
-                                    );
-                                }
-                            }
-                            @Override
-                            public void updateItem(Void item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                } else {
-                                    setGraphic(btn);
-                                }
-                            }
-                        };
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
                     }
                 };
+            }
+        };
         colAcciones.setCellFactory(cellFactory);
     }
-    
+
     private void cargarSesiones() {
         int idTutor = Sesion.getTutorSesion().getIdTutor();
         HashMap<String, Object> respuesta = AsistenciaImp.obtenerSesionesTutor(idTutor);
@@ -160,11 +162,18 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
             limpiarTablaAsistencia();
             ocultarMensajeInfo();
             btnSubirEvidencia.setDisable(true);
+            btnRegistrar.setDisable(false); // por si acaso
             return;
         }
 
         cargarAlumnos();
         cargarEstadoEvidencia(nuevaSesion.getIdTutoria());
+        configurarEstadoBotonRegistrar(nuevaSesion.getIdTutoria());
+    }
+
+    private void configurarEstadoBotonRegistrar(int idTutoria) {
+        boolean yaTieneAsistencia = AsistenciaImp.yaTieneAsistenciaRegistrada(idTutoria);
+        btnRegistrar.setDisable(yaTieneAsistencia);
     }
 
     private void cargarAlumnos() {
@@ -235,6 +244,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                     (String) res.get("mensaje"),
                     Alert.AlertType.INFORMATION
             );
+            btnRegistrar.setDisable(true);
             habilitarSubirEvidenciaSiCorresponde(sesion.getIdTutoria());
         } else {
             Utilidades.mostrarAlertaSimple(
@@ -267,7 +277,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 btnSubirEvidencia.setDisable(true);
                 mostrarMensajeInfo("Ya se ha subido evidencia para esta sesión.", "#2e7d32");
             } else {
-                btnSubirEvidencia.setDisable(true); 
+                btnSubirEvidencia.setDisable(true);
                 ocultarMensajeInfo();
             }
         } catch (Exception e) {
@@ -286,7 +296,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
         }
         File archivo = mostrarSelectorArchivoPdf();
         if (archivo == null) {
-            return; // usuario canceló
+            return;
         }
         if (!validarArchivoPdf(archivo)) {
             return;
@@ -380,8 +390,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
     private void subirEvidenciaAServicio(Tutoria sesion, File archivo) {
         try {
             byte[] datosArchivo = Files.readAllBytes(archivo.toPath());
-            HashMap<String, Object> respuesta =
-                    TutoriaImp.subirEvidencia(sesion.getIdTutoria(), datosArchivo);
+            HashMap<String, Object> respuesta
+                    = TutoriaImp.subirEvidencia(sesion.getIdTutoria(), datosArchivo);
 
             if (!(boolean) respuesta.get("error")) {
                 Utilidades.mostrarAlertaSimple(

@@ -13,7 +13,7 @@ import sistematutorias.modelo.pojo.Tutoria;
 
 public class AsistenciaImp {
 
-   public static HashMap<String, Object> obtenerSesionesTutor(int idTutor) {
+    public static HashMap<String, Object> obtenerSesionesTutor(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
             int idPeriodo = utilidad.Sesion.getIdPeriodoActual();
@@ -60,4 +60,14 @@ public class AsistenciaImp {
         }
         return respuesta;
     }
+
+    public static boolean yaTieneAsistenciaRegistrada(int idTutoria) {
+        try {
+            return AsistenciaDAO.existeAsistenciaParaTutoria(idTutoria);
+        } catch (SQLException ex) {
+            System.err.println("Error al verificar asistencia: " + ex.getMessage());
+            return false;
+        }
+    }
+
 }
