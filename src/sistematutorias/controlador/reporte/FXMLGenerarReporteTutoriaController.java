@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
@@ -31,25 +31,32 @@ import utilidad.Utilidades;
 
 public class FXMLGenerarReporteTutoriaController implements Initializable {
 
-    @FXML private ComboBox<Tutoria> cbSesiones;
-    @FXML private Label lbTotalTutorados;
-    @FXML private Label lbTotalAsistentes;
-    @FXML private Label lbTotalInasistentes;
-    @FXML private Label lbTotalProblematicas;
-    @FXML private TextArea taObservaciones;
-    @FXML private Button btnGenerar;
+    @FXML
+    private ComboBox<Tutoria> cbSesiones;
+    @FXML
+    private Label lbTotalTutorados;
+    @FXML
+    private Label lbTotalAsistentes;
+    @FXML
+    private Label lbTotalInasistentes;
+    @FXML
+    private Label lbTotalProblematicas;
+    @FXML
+    private TextArea taObservaciones;
+    @FXML
+    private Button btnGenerar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarAreaTexto(); 
+        configurarAreaTexto();
         cargarSesionesPendientes();
         configurarListenerComboBox();
-    }    
+    }
 
     private void configurarAreaTexto() {
         taObservaciones.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 500) {
-                taObservaciones.setText(oldValue); 
+                taObservaciones.setText(oldValue);
             }
         });
     }
@@ -62,15 +69,15 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
             ObservableList<Tutoria> sesionesObs = FXCollections.observableArrayList(lista);
             cbSesiones.setItems(sesionesObs);
         } else {
-            Utilidades.mostrarAlertaSimple("Sin sesiones", 
-                (String) respuesta.get("mensaje"), 
-                Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Sin sesiones",
+                    (String) respuesta.get("mensaje"),
+                    Alert.AlertType.INFORMATION);
             btnGenerar.setDisable(true);
             cbSesiones.setDisable(true);
             taObservaciones.setDisable(true);
         }
     }
-    
+
     private void configurarListenerComboBox() {
         cbSesiones.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -93,7 +100,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error", "No se pudieron calcular los totales.", Alert.AlertType.ERROR);
         }
     }
-    
+
     private void limpiarEtiquetas() {
         lbTotalTutorados.setText("0");
         lbTotalAsistentes.setText("0");
@@ -101,33 +108,78 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
         lbTotalProblematicas.setText("0");
     }
 
+    private boolean sonDatosValidos(Tutoria sesionSeleccionada, String observaciones) {
+        if (sesionSeleccionada == null) {
+            Utilidades.mostrarAlertaSimple(
+                    "Selección requerida",
+                    "Por favor seleccione una sesión de tutoría.",
+                    Alert.AlertType.WARNING
+            );
+            return false;
+        }
+
+        if (observaciones == null) {
+            Utilidades.mostrarAlertaSimple(
+                    "Campos vacíos",
+                    "Es necesario escribir las observaciones generales.",
+                    Alert.AlertType.WARNING
+            );
+            return false;
+        }
+
+        String observacionesLimpias = observaciones.trim();
+
+        if (observacionesLimpias.isEmpty()) {
+            Utilidades.mostrarAlertaSimple(
+                    "Campos vacíos",
+                    "Las observaciones no pueden estar vacías ni contener solo espacios en blanco.",
+                    Alert.AlertType.WARNING
+            );
+            return false;
+        }
+
+        if (observacionesLimpias.length() > 500) {
+            Utilidades.mostrarAlertaSimple(
+                    "Texto muy largo",
+                    "Las observaciones no pueden exceder los 500 caracteres. Actual: "
+                    + observacionesLimpias.length(),
+                    Alert.AlertType.WARNING
+            );
+            return false;
+        }
+
+        return true;
+    }
+
     @FXML
     private void clicGenerar(ActionEvent event) {
         Tutoria sesionSeleccionada = cbSesiones.getValue();
-        String observaciones = taObservaciones.getText() != null ? taObservaciones.getText().trim() : "";
-        if (sesionSeleccionada == null) {
-            Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor seleccione una sesión de tutoría.", Alert.AlertType.WARNING);
+        String observaciones = taObservaciones.getText();
+
+        if (!sonDatosValidos(sesionSeleccionada, observaciones)) {
             return;
         }
-        if (observaciones.isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "Es necesario escribir las observaciones generales.", Alert.AlertType.WARNING);
-            return;
-        }
-        if (observaciones.length() > 500) {
-            Utilidades.mostrarAlertaSimple("Texto muy largo", 
-                "Las observaciones no pueden exceder los 500 caracteres. Actual: " + observaciones.length(), 
-                Alert.AlertType.WARNING);
-            return;
-        }
+
+        String observacionesLimpias = observaciones.trim();
+
         ReporteTutoria nuevoReporte = new ReporteTutoria();
         nuevoReporte.setIdTutoria(sesionSeleccionada.getIdTutoria());
-        nuevoReporte.setObservaciones(observaciones);
+        nuevoReporte.setObservaciones(observacionesLimpias);
+
         HashMap<String, Object> respuesta = ReporteTutoriaImp.guardarReporte(nuevoReporte);
         if (!(boolean) respuesta.get("error")) {
-            Utilidades.mostrarAlertaSimple("Reporte Generado", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple(
+                    "Reporte Generado",
+                    (String) respuesta.get("mensaje"),
+                    Alert.AlertType.INFORMATION
+            );
             cerrarVentana();
         } else {
-            Utilidades.mostrarAlertaSimple("Error", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple(
+                    "Error",
+                    (String) respuesta.get("mensaje"),
+                    Alert.AlertType.ERROR
+            );
         }
     }
 
@@ -135,7 +187,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
     private void clicVolver(ActionEvent event) {
         cerrarVentana();
     }
-    
+
     @FXML
     private void clicCancelar(ActionEvent event) {
         cerrarVentana();

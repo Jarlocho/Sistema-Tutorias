@@ -62,6 +62,11 @@ public class FXMLInicioSesionController implements Initializable {
             lbErrorUsuario.setText("Número de personal obligatorio");
             lbErrorUsuario.setVisible(true);
             lbErrorUsuario.setManaged(true);
+        } else if (usuario.matches(".*\\s+.*")) {
+            correcto = false;
+            lbErrorUsuario.setText("No se permiten espacios en blanco");
+            lbErrorUsuario.setVisible(true);
+            lbErrorUsuario.setManaged(true);
         } else if (usuario.length() > 20) {
             correcto = false;
             lbErrorUsuario.setText("Máximo 20 caracteres");
@@ -72,6 +77,11 @@ public class FXMLInicioSesionController implements Initializable {
         if (password == null || password.trim().isEmpty()) {
             correcto = false;
             lbErrorContrasenia.setText("Contraseña obligatoria");
+            lbErrorContrasenia.setVisible(true);
+            lbErrorContrasenia.setManaged(true);
+        } else if (password.matches(".*\\s+.*")) {
+            correcto = false;
+            lbErrorContrasenia.setText("No se permiten espacios en blanco");
             lbErrorContrasenia.setVisible(true);
             lbErrorContrasenia.setManaged(true);
         } else if (password.length() > 255) {
