@@ -50,7 +50,7 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
     }
 
     private void configurarSpinners() {
-        SpinnerValueFactory<Integer> horasFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(7, 20, 10);
+        SpinnerValueFactory<Integer> horasFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(7, 21, 7);
         spHora.setValueFactory(horasFactory);
         SpinnerValueFactory<Integer> minutosFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0);
         spMinuto.setValueFactory(minutosFactory);
@@ -110,7 +110,7 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
     @FXML
     private void clicCancelar(ActionEvent event) {
         cbFechas.getSelectionModel().clearSelection();
-        spHora.getValueFactory().setValue(10);
+        spHora.getValueFactory().setValue(7);
         spMinuto.getValueFactory().setValue(0);
         lbErrorFecha.setText("");
     }
